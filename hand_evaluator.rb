@@ -78,6 +78,7 @@ class HandEvaluator
     false
   end
 
+  # Returns true if least 5 cards are connectors
   def is_straight?
     cards = @sorted_cards.clone
     # To make it easier to deal with aces, add a phantom ace with value 14:
@@ -89,11 +90,13 @@ class HandEvaluator
     max_connected_cards = 1
     connected_card_count = 1
     prev_value = nil
+    max_value = nil
     cards.each do |card|
       if prev_value
         if card.value == prev_value + 1
           connected_card_count += 1
           max_connected_cards = connected_card_count if connected_card_count > max_connected_cards
+          max_value = card.value
         else
           connected_card_count = 1
         end
@@ -101,12 +104,10 @@ class HandEvaluator
 
       prev_value = card.value
     end
+    
+    primary_rank = max_value
 
-    if @sorted_cards.count >= 5
-      return max_connected_cards >= 5
-    else
-      return max_connected_cards >= @sorted_cards.count
-    end
+    return max_connected_cards >= 5
   end
 
   # TEST:
