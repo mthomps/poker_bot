@@ -2,7 +2,7 @@ require 'active_model'
 
 class Card
   include Comparable
-  attr_accessor :value, :suit
+  attr_reader :value, :suit
 
   def initialize(value, suit)
     @value = value
